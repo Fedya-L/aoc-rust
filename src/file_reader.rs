@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::prelude::*;
 
-fn get_string_from_file_please(path: &str) -> String {
+pub fn get_string_from_file_please(path: &str) -> String {
     let mut file = File::open(path).expect("File not found");
     let mut contents = String::new();
     file.read_to_string(&mut contents)
@@ -9,7 +9,7 @@ fn get_string_from_file_please(path: &str) -> String {
     contents
 }
 
-fn get_usize_from_file_please(path: &str) -> usize {
+pub fn get_usize_from_file_please(path: &str) -> usize {
     let string = get_string_from_file_please(path);
     string.trim().parse().expect("Not a number")
 }

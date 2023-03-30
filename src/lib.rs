@@ -1,4 +1,5 @@
 mod file_reader;
+mod y2020;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right

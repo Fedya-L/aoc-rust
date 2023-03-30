@@ -9,6 +9,11 @@ fn get_string_from_file_please(path: &str) -> String {
     contents
 }
 
+fn get_usize_from_file_please(path: &str) -> usize {
+    let string = get_string_from_file_please(path);
+    string.trim().parse().expect("Not a number")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -18,5 +23,11 @@ mod tests {
         let result = get_string_from_file_please("src/file_reader.rs");
         let first_line = result.lines().next().unwrap();
         assert_eq!(first_line, "use std::fs::File;");
+    }
+
+    #[test]
+    fn test_usize() {
+        let result = get_usize_from_file_please("src/file_reader_test_usize.txt");
+        assert_eq!(result, 54321);
     }
 }

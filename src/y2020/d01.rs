@@ -41,9 +41,6 @@ fn solve_task_universal(
         .enumerate()
         .map(|(i, _)| numbers_len - (numbers_to_sum - i))
         .collect();
-    println!("numbers_len: {numbers_len}\nnumbers_to_sum: {numbers_to_sum}");
-    println!("{indexes:?}");
-    println!("{max_values:?}");
     loop {
         let to_sum: Vec<usize> = indexes.iter().map(|x| numbers[*x]).collect();
         if to_sum.iter().sum::<usize>() == compare_to_num {
@@ -143,10 +140,10 @@ mod tests {
 
     #[test]
     fn test_solve_task_iterator_sample() {
-        let numbers = get_numbers_from_file("ianda/2020/01s.txt");
+        let numbers = get_numbers_from_file("ianda/2020/01/01s.txt");
 
-        let expected1 = get_usize_from_file_please("ianda/2020/01sa1.txt");
-        let expected2 = get_usize_from_file_please("ianda/2020/01sa2.txt");
+        let expected1 = get_usize_from_file_please("ianda/2020/01/01sa1.txt");
+        let expected2 = get_usize_from_file_please("ianda/2020/01/01sa2.txt");
 
         let s1 = solve_task_iterator(numbers.clone(), 2, 2020);
         let s2 = solve_task_iterator(numbers.clone(), 3, 2020);
@@ -156,10 +153,10 @@ mod tests {
 
     #[test]
     fn test_solve_task_iterator_input() {
-        let numbers = get_numbers_from_file("ianda/2020/01i.txt");
+        let numbers = get_numbers_from_file("ianda/2020/01/01i.txt");
 
-        let expected1 = get_usize_from_file_please("ianda/2020/01a1.txt");
-        let expected2 = get_usize_from_file_please("ianda/2020/01a2.txt");
+        let expected1 = get_usize_from_file_please("ianda/2020/01/01a1.txt");
+        let expected2 = get_usize_from_file_please("ianda/2020/01/01a2.txt");
 
         let s1 = solve_task_iterator(numbers.clone(), 2, 2020);
         let s2 = solve_task_iterator(numbers.clone(), 3, 2020);
@@ -169,10 +166,10 @@ mod tests {
 
     #[test]
     fn test_solve_task_universal_sample() {
-        let numbers = get_numbers_from_file("ianda/2020/01s.txt");
+        let numbers = get_numbers_from_file("ianda/2020/01/01s.txt");
 
-        let expected1 = get_usize_from_file_please("ianda/2020/01sa1.txt");
-        let expected2 = get_usize_from_file_please("ianda/2020/01sa2.txt");
+        let expected1 = get_usize_from_file_please("ianda/2020/01/01sa1.txt");
+        let expected2 = get_usize_from_file_please("ianda/2020/01/01sa2.txt");
 
         let s1 = solve_task_universal(numbers.clone(), 2, 2020);
         let s2 = solve_task_universal(numbers.clone(), 3, 2020);
@@ -183,10 +180,10 @@ mod tests {
 
     #[test]
     fn test_solve_task_universal_input() {
-        let numbers = get_numbers_from_file("ianda/2020/01i.txt");
+        let numbers = get_numbers_from_file("ianda/2020/01/01i.txt");
 
-        let expected1 = get_usize_from_file_please("ianda/2020/01a1.txt");
-        let expected2 = get_usize_from_file_please("ianda/2020/01a2.txt");
+        let expected1 = get_usize_from_file_please("ianda/2020/01/01a1.txt");
+        let expected2 = get_usize_from_file_please("ianda/2020/01/01a2.txt");
 
         let s1 = solve_task_universal(numbers.clone(), 2, 2020);
         let s2 = solve_task_universal(numbers.clone(), 3, 2020);
@@ -197,29 +194,29 @@ mod tests {
 
     #[test]
     fn test_solve_sample1() {
-        let result = solve_task1("ianda/2020/01s.txt");
-        let expected = get_usize_from_file_please("ianda/2020/01sa1.txt");
+        let result = solve_task1("ianda/2020/01/01s.txt");
+        let expected = get_usize_from_file_please("ianda/2020/01/01sa1.txt");
         assert_eq!(result, expected);
     }
 
     #[test]
     fn test_solve_task1() {
-        let result = solve_task1("ianda/2020/01i.txt");
-        let expected = get_usize_from_file_please("ianda/2020/01a1.txt");
+        let result = solve_task1("ianda/2020/01/01i.txt");
+        let expected = get_usize_from_file_please("ianda/2020/01/01a1.txt");
         assert_eq!(result, expected);
     }
 
     #[test]
     fn test_solve_sample2() {
-        let result = solve_task2("ianda/2020/01s.txt");
-        let expected = get_usize_from_file_please("ianda/2020/01sa2.txt");
+        let result = solve_task2("ianda/2020/01/01s.txt");
+        let expected = get_usize_from_file_please("ianda/2020/01/01sa2.txt");
         assert_eq!(result, expected);
     }
 
     #[test]
     fn test_solve_task2() {
-        let result = solve_task2("ianda/2020/01i.txt");
-        let expected = get_usize_from_file_please("ianda/2020/01a2.txt");
+        let result = solve_task2("ianda/2020/01/01i.txt");
+        let expected = get_usize_from_file_please("ianda/2020/01/01a2.txt");
         assert_eq!(result, expected);
     }
 

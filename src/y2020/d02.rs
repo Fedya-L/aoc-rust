@@ -18,10 +18,10 @@ impl FromStr for PolicyAndPassword {
         let parts: Vec<&str> = s.split_whitespace().collect();
 
         let range_parts: Vec<&str> = parts[0].split("-").collect();
-        let min_count = range_parts[0].parse::<usize>().unwrap();
-        let max_count = range_parts[1].parse::<usize>().unwrap();
+        let min_count = range_parts[0].parse::<usize>().map_err(|_| ParsingError)?;
+        let max_count = range_parts[1].parse::<usize>().map_err(|_| ParsingError)?;
 
-        let required_letter = parts[1].chars().next().unwrap();
+        let required_letter = parts[1].chars().next().ok_or(ParsingError)?;
 
         let the_password = parts[2];
 

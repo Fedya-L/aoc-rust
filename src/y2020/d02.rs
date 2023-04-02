@@ -34,8 +34,30 @@ impl FromStr for PolicyAndPassword {
     }
 }
 
+impl PolicyAndPassword {
+    fn is_valid(&self) -> bool {
+        let mut count = 0;
+        self.the_password.chars().for_each(|c| {
+            if c == self.required_letter {
+                count = count + 1
+            }
+        });
+        count >= self.min_count && count <= self.max_count
+    }
+}
+
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_pap_is_valid() {
+        let cases: Vec<(&str, bool)> = vec![("1-3 a: abcde", true), ("2-3 a: abcde", false)];
+
+        for case in cases {
+            let pop = PolicyAndPassword::from_str(case.0).unwrap();
+            assert_eq!(pop.is_valid(), case.1);
+        }
+    }
 
     #[test]
     fn test_pap_from_string() {

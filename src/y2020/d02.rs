@@ -46,6 +46,14 @@ impl PolicyAndPassword {
     }
 }
 
+fn solve_task_1(input: &str) -> usize {
+    input
+        .lines()
+        .map(|l| l.parse::<PolicyAndPassword>().unwrap())
+        .filter(|p| p.is_valid())
+        .count()
+}
+
 mod tests {
     use super::*;
 
@@ -73,8 +81,21 @@ mod tests {
 
     #[test]
     fn test_sample_answer_1() {
-        let input = get_string_from_file_please("ianda/2020/02/si.txt");
         let expected = get_usize_from_file_please("ianda/2020/02/sa1.txt");
-        assert_eq!(2, expected)
+
+        let input = get_string_from_file_please("ianda/2020/02/si.txt");
+        let result = solve_task_1(&input);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn test_real_answer_1() {
+        let expected = get_usize_from_file_please("ianda/2020/02/ra1.txt");
+
+        let input = get_string_from_file_please("ianda/2020/02/ri.txt");
+        let result = solve_task_1(&input);
+
+        assert_eq!(result, expected)
     }
 }

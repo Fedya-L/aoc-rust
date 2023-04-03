@@ -44,6 +44,14 @@ impl PolicyAndPassword {
         });
         count >= self.min_count && count <= self.max_count
     }
+
+    fn is_toboggan_valid(&self) -> bool {
+        let chars: Vec<char> = self.the_password.chars().collect();
+        let p1 = chars[self.min_count - 1] == self.required_letter;
+        let p2 = chars[self.max_count - 1] == self.required_letter;
+
+        (p1 || p2) && (p1 != p2)
+    }
 }
 
 fn solve_task_1(input: &str) -> usize {
@@ -51,6 +59,14 @@ fn solve_task_1(input: &str) -> usize {
         .lines()
         .map(|l| l.parse::<PolicyAndPassword>().unwrap())
         .filter(|p| p.is_valid())
+        .count()
+}
+
+fn solve_task_2(input: &str) -> usize {
+    input
+        .lines()
+        .map(|l| l.parse::<PolicyAndPassword>().unwrap())
+        .filter(|p| p.is_toboggan_valid())
         .count()
 }
 
@@ -95,6 +111,26 @@ mod tests {
 
         let input = get_string_from_file_please("ianda/2020/02/ri.txt");
         let result = solve_task_1(&input);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn test_sample_answer_2() {
+        let expected = get_usize_from_file_please("ianda/2020/02/sa2.txt");
+
+        let input = get_string_from_file_please("ianda/2020/02/si.txt");
+        let result = solve_task_2(&input);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn test_real_answer_2() {
+        let expected = get_usize_from_file_please("ianda/2020/02/ra2.txt");
+
+        let input = get_string_from_file_please("ianda/2020/02/ri.txt");
+        let result = solve_task_2(&input);
 
         assert_eq!(result, expected)
     }

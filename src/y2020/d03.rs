@@ -33,6 +33,23 @@ impl FromStr for Pattern {
     }
 }
 
+fn solve_task_1(filename: &str) -> usize {
+    let input = get_string_from_file_please(filename);
+    let pattern = input.parse::<Pattern>().unwrap();
+
+    let (mut x, mut y) = (0, 0);
+
+    let mut tree_count = 0;
+    while y < pattern.height {
+        if pattern.tree_coordinates.contains(&[x % pattern.width, y]) {
+            tree_count = tree_count + 1;
+        }
+        x = x + 3;
+        y = y + 1;
+    }
+    tree_count
+}
+
 mod tests {
     use super::*;
 
@@ -60,5 +77,19 @@ mod tests {
                 assert_eq!(hs.contains(&c), c[0] == c[1]);
             }
         }
+    }
+
+    #[test]
+    fn test_solve_task_1_sample() {
+        let result = solve_task_1("ianda/2020/03/si.txt");
+        let expected = get_usize_from_file_please("ianda/2020/03/sa1.txt");
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_solve_task_1_input() {
+        let result = solve_task_1("ianda/2020/03/ri.txt");
+        let expected = get_usize_from_file_please("ianda/2020/03/ra1.txt");
+        assert_eq!(result, expected);
     }
 }

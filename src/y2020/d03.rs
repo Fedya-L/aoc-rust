@@ -39,10 +39,10 @@ fn solve_task_1(filename: &str) -> usize {
 
     let (mut x, mut y) = (0, 0);
 
-    calculate_treen_on_slope(&pattern, [3, 1])
+    calculate_trees_on_slope(&pattern, [3, 1])
 }
 
-fn calculate_treen_on_slope(pattern: &Pattern, slope: [usize; 2]) -> usize {
+fn calculate_trees_on_slope(pattern: &Pattern, slope: [usize; 2]) -> usize {
     let (mut x, mut y) = (0, 0);
 
     let mut tree_count = 0;
@@ -56,6 +56,16 @@ fn calculate_treen_on_slope(pattern: &Pattern, slope: [usize; 2]) -> usize {
     }
 
     tree_count
+}
+
+fn solve_task_2(filename: &str) -> usize {
+    let input = get_string_from_file_please(filename);
+    let pattern = input.parse::<Pattern>().unwrap();
+    let slopes: [[usize; 2]; 5] = [[1, 1], [3, 1], [5, 1], [7, 1], [1, 2]];
+    slopes
+        .map(|slope| calculate_trees_on_slope(&pattern, slope))
+        .iter()
+        .fold(1, |a, v| a * v)
 }
 
 mod tests {
@@ -98,6 +108,20 @@ mod tests {
     fn test_solve_task_1_input() {
         let result = solve_task_1("ianda/2020/03/ri.txt");
         let expected = get_usize_from_file_please("ianda/2020/03/ra1.txt");
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_solve_task_2_sample() {
+        let result = solve_task_2("ianda/2020/03/si.txt");
+        let expected = get_usize_from_file_please("ianda/2020/03/sa2.txt");
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_solve_task_2_input() {
+        let result = solve_task_2("ianda/2020/03/ri.txt");
+        let expected = get_usize_from_file_please("ianda/2020/03/ra2.txt");
         assert_eq!(result, expected);
     }
 }

@@ -37,8 +37,6 @@ fn solve_task_1(filename: &str) -> usize {
     let input = get_string_from_file_please(filename);
     let pattern = input.parse::<Pattern>().unwrap();
 
-    let (mut x, mut y) = (0, 0);
-
     calculate_trees_on_slope(&pattern, [3, 1])
 }
 

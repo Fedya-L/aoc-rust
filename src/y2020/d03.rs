@@ -39,14 +39,22 @@ fn solve_task_1(filename: &str) -> usize {
 
     let (mut x, mut y) = (0, 0);
 
+    calculate_treen_on_slope(&pattern, [3, 1])
+}
+
+fn calculate_treen_on_slope(pattern: &Pattern, slope: [usize; 2]) -> usize {
+    let (mut x, mut y) = (0, 0);
+
     let mut tree_count = 0;
+
     while y < pattern.height {
         if pattern.tree_coordinates.contains(&[x % pattern.width, y]) {
             tree_count = tree_count + 1;
         }
-        x = x + 3;
-        y = y + 1;
+        x = x + slope[0];
+        y = y + slope[1];
     }
+
     tree_count
 }
 

@@ -45,12 +45,10 @@ fn solve_task_2(filepath: &str) -> usize {
     for row in 0..128 {
         for col in 0..8 {
             if seats.contains(&Seat(row, col)) {
-                print!("#");
                 if saw_full_row == false && col == 7 {
                     saw_full_row = true;
                 }
             } else {
-                print!("x");
                 if saw_full_row {
                     return get_id_from_seat(&Seat(row, col));
                 } else {
@@ -58,7 +56,6 @@ fn solve_task_2(filepath: &str) -> usize {
                 }
             }
         }
-        print!("\n");
     }
     0
 }
@@ -71,7 +68,7 @@ mod tests {
     fn test_solve_task_2_input() {
         let result = solve_task_2("ianda/2020/05/ri.txt");
 
-        let expected = get_usize_from_file_please("ianda/2020/05/ra1.txt");
+        let expected = get_usize_from_file_please("ianda/2020/05/ra2.txt");
 
         assert_eq!(result, expected);
     }

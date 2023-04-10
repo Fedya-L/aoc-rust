@@ -1,4 +1,3 @@
-use crate::file_reader::*;
 use std::str::FromStr;
 
 struct PolicyAndPassword {
@@ -71,6 +70,8 @@ fn solve_task_2(input: &str) -> usize {
 }
 
 mod tests {
+    use crate::file_reader::{get_string_from_file_please, get_usize_from_file_please};
+
     use super::*;
 
     #[test]

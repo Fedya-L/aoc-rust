@@ -1,6 +1,12 @@
+use std::collections::HashMap;
+
+use crate::file_reader::get_string_from_file_please;
+
+// Will use normal stucts with named fields next time.
 struct Option(String, usize);
 
 struct Rule {
+    // Tried to use &str, but it didn't work.
     color: String,
     options: Vec<Option>,
 }
@@ -17,6 +23,8 @@ fn line_to_rule(line: &str) -> Rule {
             let color = split.collect::<Vec<&str>>().join(" ");
             Option(color, count)
         })
+        // "no other bags" text screwed me over.
+        .filter(|r| r.1 > 0)
         .collect::<Vec<Option>>();
 
     Rule {
@@ -25,9 +33,46 @@ fn line_to_rule(line: &str) -> Rule {
     }
 }
 
+fn solve_task_1(filepath: &str) -> usize {
+    let hm: HashMap<String, Rule> = get_string_from_file_please(filepath)
+        .lines()
+        .map(|l| line_to_rule(l))
+        .map(|r| (r.color.clone(), r))
+        .collect();
+
+    hm.iter()
+        .filter(|t| can_contain(&hm, t.0, "shiny gold"))
+        .count()
+}
+
+fn can_contain(hm: &HashMap<String, Rule>, color: &str, target: &str) -> bool {
+    let rule = hm.get(color).unwrap();
+    rule.options
+        .iter()
+        .any(|o| o.0 == target || can_contain(hm, o.0.as_str(), target))
+}
+
 #[cfg(test)]
 mod tests {
-    use super::line_to_rule;
+    use crate::file_reader::get_usize_from_file_please;
+
+    use super::*;
+
+    #[test]
+    fn test_solve_task_1_sample() {
+        let result = solve_task_1("ianda/2020/07/si.txt");
+        let expected = get_usize_from_file_please("ianda/2020/07/sa1.txt");
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_solve_task_1_input() {
+        let result = solve_task_1("ianda/2020/07/ri.txt");
+        let expected = get_usize_from_file_please("ianda/2020/07/ra1.txt");
+
+        assert_eq!(result, expected);
+    }
 
     #[test]
     fn test_line_to_rule() {

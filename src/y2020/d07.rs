@@ -45,6 +45,24 @@ fn solve_task_1(filepath: &str) -> usize {
         .count()
 }
 
+fn solve_task_2(filepath: &str) -> usize {
+    let hm: HashMap<String, Rule> = get_string_from_file_please(filepath)
+        .lines()
+        .map(|l| line_to_rule(l))
+        .map(|r| (r.color.clone(), r))
+        .collect();
+
+    count_bags(&hm, "shiny gold")
+}
+
+fn count_bags(hm: &HashMap<String, Rule>, color: &str) -> usize {
+    hm.get(color)
+        .unwrap()
+        .options
+        .iter()
+        .fold(0, |acc, r| acc + r.1 + r.1 * count_bags(hm, r.0.as_str()))
+}
+
 fn can_contain(hm: &HashMap<String, Rule>, color: &str, target: &str) -> bool {
     let rule = hm.get(color).unwrap();
     rule.options
@@ -57,6 +75,22 @@ mod tests {
     use crate::file_reader::get_usize_from_file_please;
 
     use super::*;
+
+    #[test]
+    fn test_solve_task_2_sample() {
+        let result = solve_task_2("ianda/2020/07/si.txt");
+        let expected = get_usize_from_file_please("ianda/2020/07/sa2.txt");
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_solve_task_2_input() {
+        let result = solve_task_2("ianda/2020/07/ri.txt");
+        let expected = get_usize_from_file_please("ianda/2020/07/ra2.txt");
+
+        assert_eq!(result, expected);
+    }
 
     #[test]
     fn test_solve_task_1_sample() {

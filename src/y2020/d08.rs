@@ -2,8 +2,9 @@ use std::{collections::HashSet, str::FromStr};
 
 use crate::file_reader::get_string_from_file_please;
 
+#[derive(Debug, Clone)]
 enum Instruction {
-    Nop,
+    Nop(isize),
     Acc(isize),
     Jmp(isize),
 }
@@ -17,7 +18,7 @@ impl FromStr for Instruction {
         let value = parts.next().unwrap().parse::<isize>().unwrap();
 
         match instruction {
-            "nop" => Ok(Instruction::Nop),
+            "nop" => Ok(Instruction::Nop(value)),
             "acc" => Ok(Instruction::Acc(value)),
             "jmp" => Ok(Instruction::Jmp(value)),
             _ => Err(()),
@@ -43,7 +44,7 @@ fn solve_task_1(filepath: &str) -> isize {
         visited.insert(index);
 
         match instructions[index] {
-            Instruction::Nop => index += 1,
+            Instruction::Nop(_) => index += 1,
             Instruction::Acc(value) => {
                 register += value;
                 index += 1;
@@ -55,8 +56,52 @@ fn solve_task_1(filepath: &str) -> isize {
     register
 }
 
-fn solve_task_2(filepath: &str) -> usize {
-    return 0;
+fn solve_task_2(filepath: &str) -> isize {
+    let instructions = get_instructions(filepath);
+
+    for (index, instruction) in instructions.iter().enumerate() {
+        if let Instruction::Acc(_) = instructions[index] {
+            continue;
+        }
+        let mut new_instructions = instructions.clone();
+
+        match instruction {
+            Instruction::Nop(value) => new_instructions[index] = Instruction::Jmp(*value),
+            Instruction::Jmp(value) => new_instructions[index] = Instruction::Nop(*value),
+            _ => continue,
+        }
+
+        if let Some(register) = run_instructions(new_instructions) {
+            return register;
+        }
+    }
+    0
+}
+
+fn run_instructions(instructions: Vec<Instruction>) -> Option<isize> {
+    let mut visited = HashSet::<usize>::new();
+
+    let mut register = 0;
+    let mut index = 0;
+
+    while !visited.contains(&index) && index < instructions.len() {
+        visited.insert(index);
+
+        match instructions[index] {
+            Instruction::Nop(_) => index += 1,
+            Instruction::Acc(value) => {
+                register += value;
+                index += 1;
+            }
+            Instruction::Jmp(value) => index = ((index as isize) + value) as usize,
+        }
+    }
+
+    if index == instructions.len() {
+        Some(register)
+    } else {
+        None
+    }
 }
 
 #[cfg(test)]
@@ -68,7 +113,7 @@ mod tests {
     #[test]
     fn test_solve_task_2_sample() {
         let result = solve_task_2("ianda/2020/08/si.txt");
-        let expected = get_usize_from_file_please("ianda/2020/08/sa2.txt");
+        let expected = get_isize_from_file_please("ianda/2020/08/sa2.txt");
 
         assert_eq!(result, expected);
     }
@@ -76,7 +121,7 @@ mod tests {
     #[test]
     fn test_solve_task_2_input() {
         let result = solve_task_2("ianda/2020/08/ri.txt");
-        let expected = get_usize_from_file_please("ianda/2020/08/ra2.txt");
+        let expected = get_isize_from_file_please("ianda/2020/08/ra2.txt");
 
         assert_eq!(result, expected);
     }

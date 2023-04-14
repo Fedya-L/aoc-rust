@@ -1,4 +1,4 @@
-use std::{collections::HashSet, str::FromStr};
+use std::{collections::HashSet, ptr::read_unaligned};
 
 use crate::file_reader::get_string_from_file_please;
 
@@ -7,6 +7,11 @@ enum Instruction {
     Nop(isize),
     Acc(isize),
     Jmp(isize),
+}
+
+enum ExitResult {
+    InfiniteLoop(isize),
+    EndOfProgram(isize),
 }
 
 impl FromStr for Instruction {
@@ -35,25 +40,11 @@ fn get_instructions(filepath: &str) -> Vec<Instruction> {
 
 fn solve_task_1(filepath: &str) -> isize {
     let instructions = get_instructions(filepath);
-    let mut visited = HashSet::<usize>::new();
-
-    let mut register = 0;
-    let mut index = 0;
-
-    while !visited.contains(&index) {
-        visited.insert(index);
-
-        match instructions[index] {
-            Instruction::Nop(_) => index += 1,
-            Instruction::Acc(value) => {
-                register += value;
-                index += 1;
-            }
-            Instruction::Jmp(value) => index = ((index as isize) + value) as usize,
-        }
+    let result = run_instructions(instructions);
+    match result {
+        ExitResult::InfiniteLoop(register) => register,
+        _ => 0,
     }
-
-    register
 }
 
 fn solve_task_2(filepath: &str) -> isize {
@@ -71,14 +62,14 @@ fn solve_task_2(filepath: &str) -> isize {
             _ => continue,
         }
 
-        if let Some(register) = run_instructions(new_instructions) {
+        if let ExitResult::EndOfProgram(register) = run_instructions(new_instructions) {
             return register;
         }
     }
     0
 }
 
-fn run_instructions(instructions: Vec<Instruction>) -> Option<isize> {
+fn run_instructions(instructions: Vec<Instruction>) -> ExitResult {
     let mut visited = HashSet::<usize>::new();
 
     let mut register = 0;
@@ -98,9 +89,9 @@ fn run_instructions(instructions: Vec<Instruction>) -> Option<isize> {
     }
 
     if index == instructions.len() {
-        Some(register)
+        ExitResult::EndOfProgram(register)
     } else {
-        None
+        ExitResult::InfiniteLoop(register)
     }
 }
 

@@ -14,6 +14,11 @@ pub fn get_usize_from_file_please(path: &str) -> usize {
     string.trim().parse().expect("Not a number")
 }
 
+pub fn get_isize_from_file_please(path: &str) -> isize {
+    let string = get_string_from_file_please(path);
+    string.trim().parse().expect("Not a number")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -29,5 +34,12 @@ mod tests {
     fn test_usize() {
         let result = get_usize_from_file_please("src/file_reader_test_usize.txt");
         assert_eq!(result, 54321);
+    }
+
+    #[test]
+    fn test_isize() {
+        let result = get_isize_from_file_please("src/file_reader_test_isize.txt");
+        let expected = -4321;
+        assert_eq!(result, expected);
     }
 }
